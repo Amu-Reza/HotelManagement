@@ -5,4 +5,12 @@ public class Passenger {
     private String lastName;
     private String email;
     private String password;
+
+    public Passenger(String nationalCode, String firstName, String lastName, String email, String password) {
+        this.nationalCode = nationalCode;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+    }
 }
