@@ -95,6 +95,9 @@ public class Gui {
                 }else {
 
                     Passenger passenger = new Passenger(nationalCode,firstName,lastName,email,password);
+                    Hotel.addPassengers(passenger);
+                    FileManager fileManager = new FileManager("HotelManagement/HotelManagement/data/Passengers.csv");
+                    fileManager.writeToFile(passenger.toString());
 
                 }
             }
