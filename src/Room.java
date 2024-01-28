@@ -13,8 +13,9 @@ public class Room {
         this.booked = booked;
     }
 
-    public void setBooked(Booked booked) {
-        this.booked = booked;
+
+    public void setReservationAmount(int reservationAmount) {
+        this.reservationAmount = reservationAmount;
     }
 
     public Booked getBooked() {
@@ -28,11 +29,6 @@ public class Room {
 
     public int getPrice() {
         return reservationAmount;
-    }
-
-    public int getBeds() {
-
-        return numberOfBeds;
     }
 
     @Override

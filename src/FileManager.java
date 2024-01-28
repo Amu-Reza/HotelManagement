@@ -39,7 +39,7 @@ public class FileManager {
 
     public void deleteLine(int lineNumber) {
         List<String> lines = readFromFile();
-        File tempFile = new File("temp.txt");
+        File tempFile = new File(filePath);
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile))) {
             for (int i = 0; i < lines.size(); i++) {
                 if (i != lineNumber) {

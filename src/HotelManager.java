@@ -1,16 +1,17 @@
 public class HotelManager {
 
-    private String firstName;
-    private String lastName;
-    private String personnelCode;
-    private String email;
-    private String password;
+    static final private String firstName = "Admin";
+    static final private String lastName = "Admin";
+    static final private String personnelCode = "1111111111";
+    static final private String email = "admin@gmail.com";
+    static final private String password = "Admin";
 
-    public HotelManager(String firstName, String lastName, String personnelCode, String email, String password) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.personnelCode = personnelCode;
-        this.email = email;
-        this.password = password;
+
+    public static String getEmail() {
+        return email;
+    }
+
+    public static String getPassword() {
+        return password;
     }
 }

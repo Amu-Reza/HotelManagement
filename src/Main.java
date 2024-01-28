@@ -4,8 +4,8 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 public class Main {
 
-     private static ArrayList<HotelStaff> hotelStaffs = new ArrayList<>();
-     private static ArrayList<Room> rooms = new ArrayList<>();
+    private static ArrayList<HotelStaff> hotelStaffs = new ArrayList<>();
+    private static ArrayList<Room> rooms = new ArrayList<>();
     private static ArrayList<Passenger> passengers = new ArrayList<>();
     private static LinkedList<Reservation> reservationQueue = new LinkedList<>();
 
@@ -81,12 +81,17 @@ public class Main {
         importRoomData();
         importReservationData();*/
 
-        HotelManager hotelManager = new HotelManager("admin","admin","1111111111","admin@gamil.com","admin");
-
-        Hotel hotel = new Hotel(hotelManager, hotelStaffs,  rooms,  passengers, reservationQueue);
+        Hotel hotel = new Hotel( hotelStaffs,  rooms,  passengers, reservationQueue);
 
         SwingUtilities.invokeLater(() -> {
             Gui.welcomePage();
+        });
+
+        Runtime.getRuntime().addShutdownHook(new Thread() {
+            public void run() {
+                FileManager fileManager = new FileManager("HotelManagement/HotelManagement/data/Hotel.txt");
+
+            }
         });
     }
 }

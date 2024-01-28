@@ -20,24 +20,8 @@ public class Reservation {
         this.status = status;
     }
 
-    public void setPassengerNationalCode(String passengerNationalCode) {
-        this.passengerNationalCode = passengerNationalCode;
-    }
-
     public void setEmployeePersonnelCode(String employeePersonnelCode) {
         this.employeePersonnelCode = employeePersonnelCode;
-    }
-
-    public void setRoomNumber(int roomNumber) {
-        this.roomNumber = roomNumber;
-    }
-
-    public void setPayment(int payment) {
-        this.payment = payment;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
     }
 
     public RoD getRoD() {
@@ -50,26 +34,6 @@ public class Reservation {
 
     public void setStatus(Status status) {
         this.status = status;
-    }
-
-    public String getPassengerNationalCode() {
-        return passengerNationalCode;
-    }
-
-    public int getPayment() {
-        return payment;
-    }
-
-    public String getEmployeePersonnelCode() {
-        return employeePersonnelCode;
-    }
-
-    public int getRoomNumber() {
-        return roomNumber;
-    }
-
-    public Date getDate() {
-        return date;
     }
 
     public Status getStatus() {

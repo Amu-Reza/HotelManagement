@@ -7,16 +7,35 @@ public class Hotel {
     private static ArrayList<Room> rooms;
     private static ArrayList<Passenger> passengers;
     private static LinkedList<Reservation> reservationQueue;
-
+    private static int roonNumber = 1;
     private static int cash;
 
 
-    public Hotel(HotelManager hotelManager, ArrayList<HotelStaff> hotelStaffs, ArrayList<Room> rooms, ArrayList<Passenger> passengers, LinkedList<Reservation> reservationQueue) {
-        this.hotelManager = hotelManager;
+    public Hotel(ArrayList<HotelStaff> hotelStaffs, ArrayList<Room> rooms, ArrayList<Passenger> passengers, LinkedList<Reservation> reservationQueue) {
         this.hotelStaffs = hotelStaffs;
         this.rooms = rooms;
         this.passengers = passengers;
         this.reservationQueue = reservationQueue;
+    }
+
+
+    public static void salaryPay(int salary){
+
+        Hotel.cash -= salary;
+    }
+
+    public static int getRoonNumber() {
+        return roonNumber;
+    }
+
+    public static void hotelStaffDismissal(HotelStaff hotelStaff){
+
+        hotelStaffs.remove(hotelStaff);
+    }
+
+    public static void addHotelStaff(HotelStaff hotelStaff){
+
+        Hotel.hotelStaffs.add(hotelStaff);
     }
 
 
@@ -49,32 +68,8 @@ public class Hotel {
         return hotelStaffs;
     }
 
-    public HotelManager getHotelManager() {
-        return hotelManager;
-    }
-
-    public void setHotelManager(HotelManager hotelManager) {
-        this.hotelManager = hotelManager;
-    }
-
-    public static void setHotelStaffs(ArrayList<HotelStaff> hotelStaffs) {
-        Hotel.hotelStaffs = hotelStaffs;
-    }
-
-    public static void setRooms(ArrayList<Room> rooms) {
-        Hotel.rooms = rooms;
-    }
-
-    public static void setPassengers(ArrayList<Passenger> passengers) {
-        Hotel.passengers = passengers;
-    }
-
     public static LinkedList<Reservation> getReservationQueue() {
         return reservationQueue;
-    }
-
-    public static void setReservationQueue(LinkedList<Reservation> reservationQueue) {
-        Hotel.reservationQueue = reservationQueue;
     }
 }
 

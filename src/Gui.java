@@ -1,7 +1,6 @@
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -137,6 +136,16 @@ public class Gui {
                 switch (userType){
 
                     case "Manager":
+                        if (Logic.managerLogin(email,password)) {
+                            HotelStaff hotelStaff = Logic.emploeeLogin(email, password);
+                            bottomPanel.removeAll();
+                            topPanel.removeAll();
+                            Gui.managerDashboard();
+
+                        }else {
+                            JOptionPane.showMessageDialog(frame, "Email or Password is incorrect", "Error", JOptionPane.ERROR_MESSAGE);
+
+                        }
                         break;
 
 
@@ -249,11 +258,6 @@ public class Gui {
     private static void passengerRoomList(Passenger passenger){
 
         DefaultListModel<Room> listModel = new DefaultListModel<>();
-
-        Hotel.addRooms(new Room(12,2,200, Booked.NOTBOOKED));
-        Hotel.addRooms(new Room(11,1,400, Booked.NOTBOOKED));
-        Hotel.addRooms(new Room(13,3,5555, Booked.NOTBOOKED));
-        Hotel.addRooms(new Room(10,5,200, Booked.NOTBOOKED));
 
         for (Room room : Hotel.getRooms()) {
 
@@ -391,6 +395,320 @@ public class Gui {
 
         frame.pack();
         frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+    }
+
+    private static void managerDashboard() {
+
+        JPanel managerPanel = new JPanel();
+        managerPanel.setLayout(new GridLayout(0, 1));
+
+        String[] buttonLabels = {"Reservations", "Changing employee salaries", "Employee recruitment", "Employee dismissal", "Price change", "New room", "salary payment","Exit"};
+
+        for (int i = 0; i < buttonLabels.length; i++) {
+            JButton button = new JButton(buttonLabels[i]);
+            final int index = i;
+            button.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    JButton sourceButton = (JButton) e.getSource();
+                    switch (sourceButton.getText()){
+
+                        case "Reservations":
+                            managerPanel.removeAll();
+                            managerResevation();
+                            break;
+
+                        case "Changing employee salaries":
+                            managerPanel.removeAll();
+                            managerChangingEmployeeSalaries();
+                            break;
+
+                        case "Employee recruitment":
+                            managerPanel.removeAll();
+                            managerRecruitment();
+                            break;
+
+                        case "Employee dismissal":
+                            managerPanel.removeAll();
+                            managerDismissal();
+                            break;
+
+                        case "Price change":
+                            managerPanel.removeAll();
+                            managerChangRoomPrice();
+                            break;
+
+                        case "New room":
+                            managerPanel.removeAll();
+                            managerNewRoom();
+                            break;
+
+                        case "salary payment":
+
+                            for (HotelStaff hotelStaff: Hotel.getHotelStaffs()){
+
+                                Hotel.salaryPay(Integer.parseInt(hotelStaff.getSalary()));
+                                hotelStaff.setAccountBalance(hotelStaff.getSalary()+hotelStaff.getAccountBalance());
+                            }
+
+                            JOptionPane.showMessageDialog(Gui.frame,
+                                    "All paid",
+                                    "Confirmation",
+                                    JOptionPane.INFORMATION_MESSAGE);
+
+                            break;
+
+                        case "Exit":
+                            managerPanel.removeAll();
+                            welcomePage();
+                    }
+                }
+            });
+            managerPanel.add(button);
+        }
+
+        frame.add(managerPanel);
+        frame.setVisible(true);
+    }
+
+    private static void managerResevation(){
+
+        DefaultListModel<Reservation> listModel = new DefaultListModel<>();
+        for (Reservation reservation : Hotel.getReservationQueue()) {
+            listModel.addElement(reservation);
+        }
+
+        JList<Reservation> list = new JList<>(listModel);
+        JScrollPane scrollPane = new JScrollPane(list);
+
+        JPanel resevationPanel = new JPanel();
+        resevationPanel.add(scrollPane);
+
+        frame.add(resevationPanel);
+        frame.setVisible(true);
+    }
+
+    private static void managerChangingEmployeeSalaries(){
+
+        JPanel managerPanel = new JPanel();
+        managerPanel.setLayout(new BorderLayout());
+
+        JList<HotelStaff> hotelStaffList = new JList<>((ListModel) Hotel.getHotelStaffs());
+        hotelStaffList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        JScrollPane scrollPane = new JScrollPane(hotelStaffList);
+        managerPanel.add(scrollPane, BorderLayout.CENTER);
+
+        JTextField textField = new JTextField(10);
+        managerPanel.add(textField, BorderLayout.SOUTH);
+
+        JButton button = new JButton("Enter Value");
+        button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int selectedIndex = hotelStaffList.getSelectedIndex();
+                if (selectedIndex != -1) {
+                    HotelStaff selectedOption = hotelStaffList.getSelectedValue();
+                    String textFieldValue = textField.getText();
+                    JOptionPane.showMessageDialog(frame, "Selected option: " + selectedOption + ", numerical value: " + textFieldValue);
+                    selectedOption.setSalary(textFieldValue);
+                    managerPanel.removeAll();
+                    scrollPane.removeAll();
+                    Gui.managerDashboard();
+                } else {
+                    JOptionPane.showMessageDialog(frame, "Please select an option.");
+                }
+            }
+        });
+        managerPanel.add(button, BorderLayout.EAST);
+
+        frame.add(managerPanel);
+        frame.setVisible(true);
+    }
+
+        private static void managerRecruitment(){
+
+            JPanel recruitmentPanel = new JPanel();
+            recruitmentPanel.setLayout(new GridLayout(7, 2));
+
+            JLabel nameLabel = new JLabel("first Name:");
+            JTextField firstName = new JTextField(15);
+            recruitmentPanel.add(nameLabel);
+            recruitmentPanel.add(firstName);
+
+            JLabel lastNameLabel = new JLabel("last Name:");
+            JTextField lastName = new JTextField(15);
+            recruitmentPanel.add(lastNameLabel);
+            recruitmentPanel.add(lastName);
+
+            JLabel personalCodeLabel = new JLabel("Personal Code:");
+            JTextField personalCode = new JTextField(15);
+            recruitmentPanel.add(personalCodeLabel);
+            recruitmentPanel.add(personalCode);
+
+            JLabel emailLabel = new JLabel("Email:");
+            JTextField emailField = new JTextField(15);
+            recruitmentPanel.add(emailLabel);
+            recruitmentPanel.add(emailField);
+
+            JLabel passwordLabel = new JLabel("Password:");
+            JTextField passwordField = new JPasswordField(15);
+            recruitmentPanel.add(passwordLabel);
+            recruitmentPanel.add(passwordField);
+
+            JLabel monthlySalaryLabel = new JLabel("Monthly Salary:");
+            JTextField monthlySalaryField = new JTextField(15);
+            recruitmentPanel.add(monthlySalaryLabel);
+            recruitmentPanel.add(monthlySalaryField);
+
+            JLabel accountBalanceLabel = new JLabel("Account Balance:");
+            JTextField accountBalanceField = new JTextField(15);
+            recruitmentPanel.add(accountBalanceLabel);
+            recruitmentPanel.add(accountBalanceField);
+
+            JButton registerButton = new JButton("Register");
+            registerButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    String firstNamet = firstName.getText();
+                    String lastNamet = lastName.getText();
+                    String personnelCode = personalCode.getText();
+                    String email = emailField.getText();
+                    String password = passwordField.getText();
+                    String monthlySalary = monthlySalaryField.getText();
+                    String accountBalance = accountBalanceField.getText();
+
+                    JOptionPane.showMessageDialog(frame, "Name: " + firstNamet + "\nLast name: " + lastNamet + "\nPersonnel Code: " + personnelCode +
+                            "\nEmail: " + email + "\nPassword: " + password + "\nMonthly Salary: " + monthlySalary + "\nAccount Balance: " + accountBalance);
+
+                    HotelStaff hotelStaff = new HotelStaff(firstNamet,lastNamet,personnelCode,email,password,monthlySalary,accountBalance);
+                    Hotel.addHotelStaff(hotelStaff);
+
+                    recruitmentPanel.removeAll();
+                    managerDashboard();
+                }
+            });
+            recruitmentPanel.add(new JLabel("recruitmen"));
+            recruitmentPanel.add(registerButton);
+
+            frame.add(recruitmentPanel);
+            frame.setVisible(true);
+        }
+
+        private static void managerDismissal(){
+
+            DefaultListModel<HotelStaff> listModel = new DefaultListModel<>();
+            for (HotelStaff hotelStaff : Hotel.getHotelStaffs()) {
+                listModel.addElement(hotelStaff);
+            }
+
+            JList<HotelStaff> hotelStaffList = new JList<>(listModel);
+            JScrollPane scrollPane = new JScrollPane(hotelStaffList);
+
+            JPanel dismissalPanel = new JPanel();
+            dismissalPanel.add(scrollPane);
+
+            hotelStaffList.addListSelectionListener(new ListSelectionListener() {
+                @Override
+                public void valueChanged(ListSelectionEvent e) {
+
+                    if (!e.getValueIsAdjusting()) {
+
+                        HotelStaff hotelStaff = hotelStaffList.getSelectedValue();
+                        if (hotelStaff != null) {
+
+                            JOptionPane.showMessageDialog(Gui.frame,
+                                    "You have selected: " + hotelStaffList.toString() + "\n",
+                                    "Confirmation",
+                                    JOptionPane.INFORMATION_MESSAGE);
+                            Hotel.hotelStaffDismissal(hotelStaff);
+
+                            dismissalPanel.removeAll();
+                            managerDashboard();
+                        }
+                    }
+
+                }
+            });
+
+
+
+            frame.add(dismissalPanel);
+            frame.setVisible(true);
+        }
+
+    private static void managerChangRoomPrice(){
+
+        JPanel managerPanel = new JPanel();
+        managerPanel.setLayout(new BorderLayout());
+
+        JList<Room> roomList = new JList<>((ListModel) Hotel.getRooms());
+        roomList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        JScrollPane scrollPane = new JScrollPane(roomList);
+        managerPanel.add(scrollPane, BorderLayout.CENTER);
+
+        JTextField textField = new JTextField(10);
+        managerPanel.add(textField, BorderLayout.SOUTH);
+
+        JButton button = new JButton("Enter Price");
+        button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int selectedIndex = roomList.getSelectedIndex();
+                if (selectedIndex != -1) {
+                    Room selectedOption = roomList.getSelectedValue();
+                    String textFieldValue = textField.getText();
+                    JOptionPane.showMessageDialog(frame, "Selected option: " + selectedOption + ", numerical Price: " + textFieldValue);
+                    selectedOption.setReservationAmount(Integer.parseInt(textFieldValue));
+                    managerPanel.removeAll();
+                    scrollPane.removeAll();
+                    Gui.managerDashboard();
+                } else {
+                    JOptionPane.showMessageDialog(frame, "Please select an room.");
+                }
+            }
+        });
+        managerPanel.add(button, BorderLayout.EAST);
+
+        frame.add(managerPanel);
+        frame.setVisible(true);
+    }
+
+    private static void managerNewRoom() {
+
+        JPanel roomPanel = new JPanel();
+        roomPanel.setLayout(new GridLayout(3, 2));
+
+        JLabel bedsLabel = new JLabel("Number of Beds: ");
+        JTextField bedsField = new JTextField(10);
+        JLabel priceLabel = new JLabel("Price per Night: ");
+        JTextField priceField = new JTextField(10);
+        JButton submitButton = new JButton("Submit");
+
+        roomPanel.add(bedsLabel);
+        roomPanel.add(bedsField);
+        roomPanel.add(priceLabel);
+        roomPanel.add(priceField);
+        roomPanel.add(submitButton);
+
+        submitButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int beds = Integer.parseInt(bedsField.getText());
+                int price = Integer.parseInt(priceField.getText());
+
+                Room room = new Room(Hotel.getRoonNumber()+1,beds,price,Booked.NOTBOOKED);
+                Hotel.addRooms(room);
+                JOptionPane.showMessageDialog(Gui.frame,
+                        "Room added",
+                        "Confirmation",
+                        JOptionPane.INFORMATION_MESSAGE);
+
+                frame.remove(roomPanel);
+                managerDashboard();
+            }
+        });
+        frame.add(roomPanel);
         frame.setVisible(true);
     }
 

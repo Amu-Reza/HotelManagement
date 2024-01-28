@@ -20,7 +20,7 @@ public class Logic {
 
                 for (Passenger passenger : Hotel.getPassengers()){
 
-                    if (email == passenger.getEmail() && password == passenger.getPassword()){
+                    if (email.equals(passenger.getEmail()) && password.equals(passenger.getPassword()) ){
 
                         return passenger;
                     }else {
@@ -34,7 +34,7 @@ public class Logic {
 
         for (HotelStaff hotelStaff : Hotel.getHotelStaffs()){
 
-            if (email == hotelStaff.getEmail() && password == hotelStaff.getPassword()){
+            if (email.equals(hotelStaff.getEmail()) && password.equals(hotelStaff.getPassword()) ){
 
                 return hotelStaff;
             }else {
@@ -42,5 +42,16 @@ public class Logic {
             }
         }
         return null;
+    }
+
+    public static boolean managerLogin(String email, String password){
+
+        if (email.equals(HotelManager.getEmail()) && password.equals(HotelManager.getPassword())){
+
+            return true;
+
+        }else {
+            return false;
+        }
     }
 }
