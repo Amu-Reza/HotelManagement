@@ -1,4 +1,5 @@
 import javax.swing.*;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 public class Main {
@@ -10,7 +11,7 @@ public class Main {
 
     public static void importHotelStaffData() {
 
-        FileManager fileManager = new FileManager("HotelManagement/HotelManagement/data/HotelStaffs.csv");
+        FileManager fileManager = new FileManager("HotelManagement/HotelManagement/data/HotelStaffs.txt");
 
         ArrayList<String> hotelStaffsData = fileManager.readFromFile();
         for (String s: hotelStaffsData) {
@@ -25,14 +26,14 @@ public class Main {
 
     public static void importRoomData() {
 
-        FileManager fileManager = new FileManager("HotelManagement/HotelManagement/data/Rooms.csv");
+        FileManager fileManager = new FileManager("HotelManagement/HotelManagement/data/Rooms.txt");
 
         ArrayList<String> roomsData = fileManager.readFromFile();
         for (String s: roomsData) {
 
             String[] words = s.split(" ");
 
-            Room room = new Room(Integer.parseInt(words[0]),Integer.parseInt(words[1]),Integer.parseInt(words[2]));
+            Room room = new Room(Integer.parseInt(words[0]),Integer.parseInt(words[1]),Integer.parseInt(words[2]),Booked.NOTBOOKED);
             rooms.add(room);
         }
 
@@ -40,7 +41,7 @@ public class Main {
 
     public static void importPassengerData() {
 
-        FileManager fileManager = new FileManager("HotelManagement/HotelManagement/data/Passengers.csv");
+        FileManager fileManager = new FileManager("HotelManagement/HotelManagement/data/Passengers.txt");
 
         ArrayList<String> passengersData = fileManager.readFromFile();
         for (String s : passengersData) {
@@ -54,7 +55,7 @@ public class Main {
 
     public static void importReservationData() {
 
-        FileManager fileManager = new FileManager("HotelManagement/HotelManagement/data/Reservation.csv");
+        FileManager fileManager = new FileManager("HotelManagement/HotelManagement/data/Reservation.txt");
 
         ArrayList<String> reservationsData = fileManager.readFromFile();
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
@@ -62,7 +63,12 @@ public class Main {
 
             String[] words = s.split(" ");
 
-            Reservation reservation = new Reservation(words[0], Integer.parseInt(words[1]), words[2], Integer.parseInt(words[3]), formatter.parse(words[4]));
+            Reservation reservation = null;
+            try {
+                reservation = new Reservation(words[0], Integer.parseInt(words[1]), Integer.parseInt(words[2]), formatter.parse(words[3]), Status.valueOf(words[4]),RoD.valueOf(words[5]));
+            } catch (ParseException e) {
+                throw new RuntimeException(e);
+            }
             reservationQueue.push(reservation);
         }
     }
@@ -70,9 +76,10 @@ public class Main {
 
     public static void main(String[] args) {
 
-        importPassengerData();
+        /*importPassengerData();
         importHotelStaffData();
         importRoomData();
+        importReservationData();*/
 
         HotelManager hotelManager = new HotelManager("admin","admin","1111111111","admin@gamil.com","admin");
 

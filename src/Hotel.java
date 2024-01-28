@@ -8,6 +8,8 @@ public class Hotel {
     private static ArrayList<Passenger> passengers;
     private static LinkedList<Reservation> reservationQueue;
 
+    private static int cash;
+
 
     public Hotel(HotelManager hotelManager, ArrayList<HotelStaff> hotelStaffs, ArrayList<Room> rooms, ArrayList<Passenger> passengers, LinkedList<Reservation> reservationQueue) {
         this.hotelManager = hotelManager;
@@ -18,19 +20,62 @@ public class Hotel {
     }
 
 
+    public static void addCash(int cash){
+
+        Hotel.cash += cash;
+    }
+
+    public static ArrayList<Room> getRooms() {
+        return rooms;
+    }
+
     public static void addPassengers(Passenger passenger) {
-        this.passengers.add(passenger);
+        Hotel.passengers.add(passenger);
     }
 
     public void addHotelStaffs(HotelStaff hotelStaff) {
         this.hotelStaffs.add(hotelStaff);
     }
 
-    public void addRooms(Room room) {
-        this.rooms.add(room);
+    public  static void addRooms(Room room) {
+        Hotel.rooms.add(room);
     }
 
+    public static ArrayList<Passenger> getPassengers() {
+        return passengers;
+    }
 
+    public static ArrayList<HotelStaff> getHotelStaffs() {
+        return hotelStaffs;
+    }
+
+    public HotelManager getHotelManager() {
+        return hotelManager;
+    }
+
+    public void setHotelManager(HotelManager hotelManager) {
+        this.hotelManager = hotelManager;
+    }
+
+    public static void setHotelStaffs(ArrayList<HotelStaff> hotelStaffs) {
+        Hotel.hotelStaffs = hotelStaffs;
+    }
+
+    public static void setRooms(ArrayList<Room> rooms) {
+        Hotel.rooms = rooms;
+    }
+
+    public static void setPassengers(ArrayList<Passenger> passengers) {
+        Hotel.passengers = passengers;
+    }
+
+    public static LinkedList<Reservation> getReservationQueue() {
+        return reservationQueue;
+    }
+
+    public static void setReservationQueue(LinkedList<Reservation> reservationQueue) {
+        Hotel.reservationQueue = reservationQueue;
+    }
 }
 
 
